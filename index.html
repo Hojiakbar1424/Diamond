@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DIAMOND CREATIVE GROUP</title>
+  <!-- GSAP for scroll animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:'Segoe UI',sans-serif; background:#f9fafb; color:#333; line-height:1.6; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; transition:color .3s; }
+    a:hover { color:#2563eb; }
+    header { background:linear-gradient(to right,#0f172a,#1e293b); color:#fff; text-align:center; padding:3rem 1rem; font-size:2rem; letter-spacing:3px; text-transform:uppercase; }
+    nav { background:#1e293b; display:flex; justify-content:center; gap:2rem; padding:1rem; flex-wrap:wrap; font-weight:600; }
+    nav a { color:#cbd5e1; text-transform:uppercase; padding:.5rem; }
+    nav a:hover { color:#fff; }
+
+    /* Hero */
+    .hero { position:relative; background:linear-gradient(135deg,rgba(0,0,0,.6),rgba(0,0,0,.6)),url('https://source.unsplash.com/1600x900/?nature,landscape'); background-size:cover; background-position:center; color:#fff; text-align:center; padding:6rem 1rem; }
+    .hero h2 { font-size:3rem; margin-bottom:1rem; opacity:0; transform:scale(0.5); animation:popIn 1.2s ease-out forwards; }
+    .hero p { font-size:1.2rem; max-width:600px; margin:0 auto; }
+    .ripple-button { margin-top:2rem; padding:1rem 2rem; background:#2563eb; color:#fff; font-size:1rem; border:none; border-radius:5px; cursor:pointer; position:relative; overflow:hidden; }
+
+    @keyframes popIn { 0% {opacity:0;transform:scale(0.5);}60%{opacity:1;transform:scale(1.1);}100%{opacity:1;transform:scale(1);} }
+    @keyframes ripple-effect { to { transform:scale(10); opacity:0; } }
+
+    /* Services */
+    section { max-width:1200px; margin:5rem auto; padding:0 1rem; text-align:center; }
+    section h2 { font-size:2.5rem; margin-bottom:2rem; color:#111827; font-weight:700; }
+    .services { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; }
+    .service { perspective:1000px; }
+    .service-inner { background:#fff; padding:2rem; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,.1); transition:transform .6s; transform-style:preserve-3d; position:relative; cursor:pointer; }
+    .service:hover .service-inner { transform:rotateY(180deg); }
+    .service-front, .service-back { position:absolute; top:0; left:0; width:100%; height:100%; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:1rem; }
+    .service-back { background:#2563eb; color:#fff; transform:rotateY(180deg); border-radius:12px; }
+
+    /* SVG drawing */
+    .logo-draw { stroke:#2563eb; stroke-width:2; fill:none; stroke-dasharray:300; stroke-dashoffset:300; width:200px; margin:2rem auto; }
+
+    /* Login/Admin/Modal/Footer—keeping your original styling */
+    #loginOverlay { position:fixed; top:0;left:0;right:0;bottom:0; background:#0f172a; color:white; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+    #loginOverlay input, #loginOverlay button { font-size:1rem; padding:10px; border-radius:5px; border:none; margin-top:1rem; }
+    #loginOverlay button { background:#2563eb; color:white; cursor:pointer; }
+    #adminPanel { text-align:center; padding:2rem; background:#f1f5f9; max-width:400px; margin:2rem auto; border-radius:12px; box-shadow:0 5px 15px rgba(0,0,0,.1); }
+    #adminPanel input { padding:10px; font-size:1rem; border-radius:5px; border:1px solid #ccc; width:70%; }
+    #adminPanel button { padding:10px 15px; background:#0f172a; color:white; border:none; margin-left:10px; border-radius:5px; cursor:pointer; width:25%; }
+    #adminMessage { margin-top:1rem; min-height:1.2em; }
+    #logoutBtn { margin-top:15px; padding:8px 15px; background:#ef4444; color:white; border:none; border-radius:5px; cursor:pointer; font-size:1rem; }
+    #adminModal { position:fixed; top:50%;left:50%;transform:translate(-50%,-50%); background:white; color:#333; padding:2rem; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.3); z-index:10000; display:none; width:300px; max-width:90%; }
+    #adminModal h3 { margin-bottom:1rem; font-weight:700; }
+    #adminModal ul { text-align:left; max-height:200px; overflow-y:auto; padding-left:1.2rem; margin-bottom:1rem; }
+    #adminModal button { background:#2563eb; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; width:100%; font-size:1rem; }
+    footer { background:linear-gradient(to right,#0f172a,#1e3a8a); color:#e0e7ff; text-align:center; padding:3rem 1rem; font-size:1rem; }
+    footer a { color:#60a5fa; font-weight:600; }
+  </style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="loginOverlay">
+    <h2>Saytga kirish</h2>
+    <input id="usernameInput" type="text" placeholder="Ismingizni kiriting" />
+    <button onclick="enterSite()">Kirish</button>
+  </div>
+
+  <header>DIAMOND CREATIVE GROUP</header>
+  <nav>
+    <a href="#services">Xizmatlar</a>
+    <a href="#contact">Aloqa</a>
+  </nav>
+
+  <div class="hero">
+    <h2 id="heroText">Go‘zal lahzalarni abadiylashtiramiz</h2>
+    <p>Love Story, to‘y kliplari va reklama videolari uchun mukammal yechimlar</p>
+    <button class="ripple-button">Biz bilan bog‘lanish</button>
+  </div>
+
+  <section id="services">
+    <h2>Xizmatlarimiz</h2>
+    <div class="services">
+      <div class="service"><div class="service-inner"><div class="service-front"><h3>💍 Love Story</h3><p>Romantik lavhalar</p></div><div class="service-back"><p>Love Story paket haqida bilib oling!</p></div></div></div>
+      <div class="service"><div class="service-inner"><div class="service-front"><h3>💒 To‘y video</h3><p>Sizning eng quvonchli kuningiz</p></div><div class="service-back"><p>To‘y videolarimizni ko‘ring!</p></div></div></div>
+      <div class="service"><div class="service-inner"><div class="service-front"><h3>📸 Fotosessiya</h3><p>Studio va outdoor</p></div><div class="service-back"><p>Fotosessiya paketlarimiz bilan tanishing</p></div></div></div>
+      <div class="service"><div class="service-inner"><div class="service-front"><h3>🎬 Reklama & SMM</h3><p>Qisqa SMM videolar</p></div><div class="service-back"><p>Portfoliomizni ko‘ring!</p></div></div></div>
+    </div>
+  </section>
+
+  <svg class="logo-draw" viewBox="0 0 200 100"><path d="M10,50 L190,50"/></svg>
+
+  <section id="adminPanel">
+    <h2>🔒 Admin Panel</h2>
+    <input id="adminCode" type="password" placeholder="Admin kodni kiriting" />
+    <button onclick="checkAdmin()">Kirish</button>
+    <p id="adminMessage"></p>
+    <button id="logoutBtn" onclick="logout()" style="display:none;">Chiqish</button>
+  </section>
+
+  <div id="adminModal">
+    <h3>Saytga kirgan foydalanuvchilar</h3>
+    <p>Foydalanuvchilar soni: <span id="userCount">0</span></p>
+    <ul id="userList"></ul>
+    <button onclick="closeModal()">Yopish</button>
+  </div>
+
+  <footer id="contact">
+    <h2>Aloqa</h2>
+    <p>📞 +998 93 106 03 03 va 98 313 31 31</p>
+    <p>📱 <a href="https://www.instagram.com/diamond_creativegroup/" target="_blank">@diamond_creativegroup</a></p>
+  </footer>
+
+  <script>
+    // Typing effect
+    const heroText = document.getElementById('heroText');
+    const txt = "Go‘zal lahzalarni abadiylashtiramiz";
+    let i = 0;
+    heroText.textContent = '';
+    (function type(){ if(i<txt.length) heroText.textContent+=txt[i++]; setTimeout(type,80); })();
+
+    // Ripple effect
+    document.querySelectorAll('.ripple-button').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const rect=btn.getBoundingClientRect(), span=document.createElement('span');
+        const size=Math.max(rect.width,rect.height), x=e.clientX-rect.left-size/2, y=e.clientY-rect.top-size/2;
+        span.style.cssText=`position:absolute;width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:rgba(255,255,255,0.4);border-radius:50%;transform:scale(0);animation:ripple-effect .6s linear;`;
+        btn.appendChild(span);
+        span.addEventListener('animationend',()=>span.remove());
+      });
+    });
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('.service', { scrollTrigger:{trigger:'.services', start:'top 80%'}, opacity:0, y:50, stagger:0.2, duration:1 });
+    gsap.to('.logo-draw path', { strokeDashoffset:0, duration:2, ease:'power2.inOut', scrollTrigger:{trigger:'.logo-draw', start:'top 90%'} });
+
+    // Login/Admin scripts
+    function enterSite(){ const name=document.getElementById("usernameInput").value.trim(); if(!name){alert("Iltimos, ismingizni kiriting!");return;} localStorage.setItem("username",name); let u=JSON.parse(localStorage.getItem("users"))||[]; if(!u.includes(name)){u.push(name); localStorage.setItem("users",JSON.stringify(u));} document.getElementById("loginOverlay").style.display="none"; }
+    function checkAdmin(){ const code=document.getElementById("adminCode").value.trim(); const msg=document.getElementById("adminMessage"); if(code==="JAVOHIR 106"){ msg.style.color="#10b981"; msg.textContent="✅ Hush kelibsiz, Admin!"; document.getElementById("logoutBtn").style.display="inline-block"; showAdminModal(); } else{ msg.style.color="#ef4444"; msg.textContent="❌ Noto‘g‘ri kod!"; document.getElementById("logoutBtn").style.display="none"; closeModal(); } }
+    function logout(){ localStorage.removeItem("username"); alert("Siz chiqdingiz!"); location.reload(); }
+    function showAdminModal(){ const u=JSON.parse(localStorage.getItem("users"))||[]; document.getElementById("userCount").textContent=u.length; const list=document.getElementById("userList"); list.innerHTML=""; u.forEach((n,i)=>{ const li=document.createElement("li"); li.style.display="flex"; li.style.justifyContent="space-between"; li.style.alignItems="center"; li.innerHTML=`<span>${n}</span><button onclick="deleteUser(${i})" style="background:#ef4444;color:white;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;">❌ O'chirish</button>`; list.appendChild(li); }); document.getElementById("adminModal").style.display="block"; }
+    function closeModal(){ document.getElementById("adminModal").style.display="none"; }
+    function deleteUser(i){ let u=JSON.parse(localStorage.getItem("users"))||[]; const name=u[i]; if(confirm(`"${name}" foydalanuvchini o'chirishni xohlaysizmi?`)){ u.splice(i,1); localStorage.setItem("users",JSON.stringify(u)); if(localStorage.getItem("username")===name){ localStorage.removeItem("username"); alert("Siz o'zingizni o'chirdingiz, saytdan chiqiladi."); location.reload(); return; } showAdminModal(); } }
+    window.addEventListener("DOMContentLoaded",()=>{ const nm=localStorage.getItem("username"); if(!nm){ document.getElementById("loginOverlay").style.display="flex"; } else{ document.getElementById("loginOverlay").style.display="none"; let u=JSON.parse(localStorage.getItem("users"))||[]; if(!u.includes(nm)){ u.push(nm); localStorage.setItem("users",JSON.stringify(u)); } } });
+  </script>
+</body>
+</html>
+

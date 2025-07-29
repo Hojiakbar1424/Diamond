@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DIAMOND CREATIVE GROUP</title>
+  <style>
+    /* Sizning oldingi CSS kodlaringiz shu yerda */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      color: #333;
+      line-height: 1.6;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #2563eb;
+    }
+    header {
+      background: linear-gradient(to right, #0f172a, #1e293b);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    nav {
+      background-color: #1e293b;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1.5rem 0;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #cbd5e1;
+      font-size: 1rem;
+      text-transform: uppercase;
+      padding: 0.5rem;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #fff;
+    }
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://source.unsplash.com/1600x900/?nature,landscape');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      text-align: center;
+      padding: 6rem 1rem;
+    }
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+    section {
+      max-width: 1200px;
+      margin: 5rem auto;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #111827;
+      font-weight: 700;
+    }
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .service {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .service:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
+    }
+    .service h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      color: #2563eb;
+      font-weight: 600;
+    }
+    .service p {
+      font-size: 1rem;
+      color: #475569;
+    }
+    footer {
+      background: linear-gradient(to right, #0f172a, #1e3a8a);
+      color: #e0e7ff;
+      text-align: center;
+      padding: 3rem 1rem;
+      font-size: 1rem;
+    }
+    footer a {
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    #loginOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #loginOverlay input {
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      border-radius: 5px;
+      border: none;
+      width: 250px;
+    }
+    #loginOverlay button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    #adminPanel {
+      text-align: center;
+      padding: 2rem;
+      background: #f1f5f9;
+      max-width: 400px;
+      margin: 2rem auto;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    #adminPanel input {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 70%;
+    }
+    #adminPanel button {
+      padding: 10px 15px;
+      background: #0f172a;
+      color: white;
+      border: none;
+      margin-left: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 25%;
+    }
+    #adminMessage {
+      margin-top: 1rem;
+      color: #10b981;
+      min-height: 1.2em;
+    }
+    #logoutBtn {
+      margin-top: 15px;
+      padding: 8px 15px;
+      font-size: 1rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Modal oynani style qo'shish */
+    #adminModal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      color: #333;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 10000;
+      display: none;
+      width: 300px;
+      max-width: 90%;
+    }
+    #adminModal h3 {
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    #adminModal ul {
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-left: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    #adminModal button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login overlay -->
+<div id="loginOverlay">
+  <h2>Saytga kirish</h2>
+  <input id="usernameInput" type="text" placeholder="Ismingizni kiriting" />
+  <button onclick="enterSite()">Kirish</button>
+</div>
+
+<header>DIAMOND CREATIVE GROUP</header>
+
+<nav>
+  <a href="#services">Xizmatlar</a>
+  <a href="#portfolio">Portfolio</a>
+  <a href="#contact">Aloqa</a>
+</nav>
+
+<div class="hero">
+  <h2 id="heroText"></h2>
+  <p>Love Story, to‘y kliplari va reklama videolari uchun mukammal yechimlar</p>
+</div>
+
+<section id="services">
+  <h2>Xizmatlarimiz</h2>
+  <div class="services">
+    <div class="service">
+      <h3>💍 Love Story</h3>
+      <p>Romantik va esda qolarli lavhalarni go‘zal kadrlar orqali ifodalaymiz.</p>
+    </div>
+    <div class="service">
+      <h3>💒 To‘y video va fotosessiya</h3>
+      <p>Sizning eng quvonchli kuningizni professional uslubda suratga olamiz.</p>
+    </div>
+    <div class="service">
+      <h3>📸 Random Fotosessiya</h3>
+      <p>Studio va outdoor (tashqi) fotosessiyalar: shaxsiy, oilaviy, do‘stlar bilan.</p>
+    </div>
+    <div class="service">
+      <h3>🎬 Reklama & SMM video</h3>
+      <p>Instagram, YouTube va TikTok uchun qisqa videolar va reklama kliplar tayyorlaymiz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Admin Panel -->
+<section id="adminPanel">
+  <h2>🔒 Admin Panel</h2>
+  <input id="adminCode" type="password" placeholder="Admin kodni kiriting" />
+  <button onclick="checkAdmin()">Kirish</button>
+  <p id="adminMessage"></p>
+  <button id="logoutBtn" onclick="logout()" style="display:none;">Chiqish</button>
+</section>
+
+<!-- Admin Modal -->
+<div id="adminModal">
+  <h3>Saytga kirgan foydalanuvchilar</h3>
+  <p>Foydalanuvchilar soni: <span id="userCount">0</span></p>
+  <ul id="userList"></ul>
+  <button onclick="closeModal()">Yopish</button>
+</div>
+
+<footer id="contact">
+  <h2>Aloqa</h2>
+  <p>📞 Telefon: <strong>+998 93 106 03 03 va 98 313 31 31</strong></p>
+  <p>📱 Instagram: <a href="https://www.instagram.com/diamond_creativegroup/" target="_blank">@diamond_creativegroup</a></p>
+</footer>
+
+<script>
+  // Login funksiyasi
+  function enterSite() {
+    const nameInput = document.getElementById("usernameInput");
+    const name = nameInput.value.trim();
+
+    if (name === "") {
+      alert("Iltimos, ismingizni kiriting!");
+      nameInput.focus();
+      return;
+    }
+
+    // Foydalanuvchi ismini localStorage'da saqlaymiz
+    localStorage.setItem("username", name);
+
+    // Foydalanuvchilar ro'yxatini ham localStorage'da saqlaymiz (array)
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Agar ism ro'yxatda bo'lmasa, qo'shamiz
+    if (!users.includes(name)) {
+      users.push(name);
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    document.getElementById("loginOverlay").style.display = "none";
+  }
+
+  // Admin kodi tekshiruvi
+  function checkAdmin() {
+    const codeInput = document.getElementById("adminCode");
+    const code = codeInput.value.trim();
+    const msg = document.getElementById("adminMessage");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (code === "Javohir 106") {
+      msg.style.color = "#10b981";
+      msg.textContent = "✅ Hush kelibsiz, Admin!";
+      logoutBtn.style.display = "inline-block";
+
+      // Admin oynasini ochamiz va foydalanuvchilar ro'yxatini ko'rsatamiz
+      showAdminModal();
+    } else {
+      msg.style.color = "#ef4444";
+      msg.textContent = "❌ Noto‘g‘ri kod!";
+      logoutBtn.style.display = "none";
+
+      // Agar noto'g'ri bo'lsa modalni yopamiz
+      closeModal();
+    }
+  }
+
+  // Chiqish funksiyasi
+  function logout() {
+    localStorage.removeItem("username");
+    alert("Siz chiqdingiz!");
+    location.reload();
+  }
+
+  // Sahifa yuklanganda ishga tushadi
+  window.addEventListener("DOMContentLoaded", () => {
+    const storedName = localStorage.getItem("username");
+
+    if (!storedName) {
+      document.getElementById("loginOverlay").style.display = "flex";
+    } else {
+      document.getElementById("loginOverlay").style.display = "none";
+
+      // Foydalanuvchilar ro'yxatiga kiritish (masalan, agar foydalanuvchi yangi bo'lsa)
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      if (!users.includes(storedName)) {
+        users.push(storedName);
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+    }
+
+    // Matn yozish animatsiyasi
+    const text = "Go‘zal lahzalarni abadiylashtiramiz";
+    const hero = document.getElementById("heroText");
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        hero.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 80);
+      }
+    }
+    type();
+  });
+
+  // Admin modalni ko'rsatish funksiyasi
+  function showAdminModal() {
+    const modal = document.getElementById("adminModal");
+    const userList = document.getElementById("userList");
+    const userCount = document.getElementById("userCount");
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    userCount.textContent = users.length;
+
+    userList.innerHTML = "";
+
+    users.forEach((name, index) => {
+      const li = document.createElement("li");
+      li.style.display = "flex";
+      li.style.justifyContent = "space-between";
+      li.style.alignItems = "center";
+      li.style.padding = "5px 0";
+
+      const span = document.createElement("span");
+      span.textContent = name;
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌ O'chirish";
+      delBtn.style.background = "#ef4444";
+      delBtn.style.color = "white";
+      delBtn.style.border = "none";
+      delBtn.style.borderRadius = "4px";
+      delBtn.style.padding = "3px 8px";
+      delBtn.style.cursor = "pointer";
+      delBtn.onclick = () => deleteUser(index);
+
+      li.appendChild(span);
+      li.appendChild(delBtn);
+
+      userList.appendChild(li);
+    });
+
+    modal.style.display = "block";
+  }
+
+  // Admin modalni yopish
+  function closeModal() {
+    document.getElementById("adminModal").style.display = "none";
+  }
+
+  // Foydalanuvchini o'chirish funksiyasi
+  function deleteUser(index) {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userName = users[index];
+
+    if (confirm(`"${userName}" foydalanuvchini o'chirishni xohlaysizmi?`)) {
+      users.splice(index, 1);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Agar o'chirilayotgan user hozirgi login bo'lsa, uni ham username dan olib tashlaymiz
+      const currentUser = localStorage.getItem("username");
+      if (currentUser === userName) {
+        localStorage.removeItem("username");
+        alert("Siz o'zingizni o'chirdingiz, saytdan chiqiladi.");
+        location.reload();
+        return;
+      }
+
+      showAdminModal(); // Ro'yxatni yangilaymiz
+    }
+  }
+</script>
+
+</body>
+</html>
